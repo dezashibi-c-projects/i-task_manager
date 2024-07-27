@@ -25,16 +25,17 @@ Task* task_create(const char* description, size_t count)
     Task* new_task = malloc(sizeof(Task));
     if (new_task == NULL)
     {
-        fprintf(stderr, "%s on %s: Memory allocation failed\n", __FILE__, __LINE__);
+        fprintf(stderr, "%s on %d: Memory allocation failed\n", __FILE__, __LINE__);
         exit(1);
     }
 
     new_task->id = generate_unique_id(count);
+    new_task->state = NOT_STARTED;
 
     new_task->description = malloc((strlen(description) + 1) * sizeof(char));
     if (new_task->description == NULL)
     {
-        fprintf(stderr, "%s on %s: Memory allocation failed\n", __FILE__, __LINE__);
+        fprintf(stderr, "%s on %d: Memory allocation failed\n", __FILE__, __LINE__);
         free(new_task);
         exit(1);
     }
