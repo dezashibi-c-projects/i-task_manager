@@ -46,7 +46,7 @@ Task* task_create(const char* description, size_t count)
     return new_task;
 }
 
-bool task_delete(TodoList* todo, unsigned long long id)
+bool task_delete_by_id(TodoList* todo, unsigned long long id)
 {
     Task* current = todo->head;
     Task* previous = NULL;
@@ -70,6 +70,7 @@ bool task_delete(TodoList* todo, unsigned long long id)
                 todo->tail = previous;
             }
 
+            free(current->description);
             free(current);
             todo->size--;
 

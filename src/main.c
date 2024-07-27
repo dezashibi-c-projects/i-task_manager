@@ -40,7 +40,7 @@ int main(void)
     puts("Todo list contents:");
     print_todo(&todo);
 
-    if (task_delete(&todo, todo.head->id))
+    if (task_delete_by_id(&todo, todo.head->id))
     {
         puts("task deleted successfully");
     }
