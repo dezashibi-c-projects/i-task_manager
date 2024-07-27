@@ -6,7 +6,9 @@ The application will utilize a linked list to manage tasks dynamically, ensuring
 
 ## Design Decisions
 
-I would go for `enum` over boolean as it's going to be more fun. so:
+I would go for `enum` over boolean for task's state as it's going to be more fun and I can use colors for each state.
+
+So here's the `enum` for task's state:
 
 ```c
 typedef enum
@@ -16,4 +18,14 @@ typedef enum
     DONE,
     CANCELLED,
 } TaskState;
+```
+
+Here's the `Task` struct:
+
+```c
+typedef struct
+{
+    char* description;
+    TaskState state;
+} Task;
 ```
