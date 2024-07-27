@@ -46,42 +46,60 @@ Task* task_create(const char* description, size_t count)
     return new_task;
 }
 
-bool task_delete_by_id(TodoList* todo, unsigned long long id)
+void task_memory_cleanup(Task* task)
+{
+    free(task->description);
+    free(task);
+}
+
+Task* todo_list_task_find_by_id(TodoList* todo, unsigned long long id, Task** previous)
 {
     Task* current = todo->head;
-    Task* previous = NULL;
+    *previous = NULL;
 
     while (current != NULL)
     {
         if (current->id == id)
         {
-            if (previous == NULL)
-            {
-                // Node to delete is the head
-                todo->head = current->next;
-            }
-            else
-            {
-                previous->next = current->next;
-            }
-
-            if (current == todo->tail)
-            {
-                todo->tail = previous;
-            }
-
-            free(current->description);
-            free(current);
-            todo->size--;
-
-            return true; // deletion is successful
+            return current;
         }
 
-        previous = current;
+        *previous = current;
         current = current->next;
     }
 
-    return false; // task was not found
+    return NULL; // Not Found
+}
+
+bool todo_list_task_delete_by_id(TodoList* todo, unsigned long long id)
+{
+    Task* previous = NULL;
+    Task* task_to_delete = todo_list_task_find_by_id(todo, id, &previous);
+
+    if (task_to_delete == NULL)
+    {
+        return false; // task not found
+    }
+
+    if (previous == NULL)
+    {
+        // Task to delete is the head;
+        todo->head = task_to_delete->next;
+    }
+    else
+    {
+        previous->next = task_to_delete->next;
+    }
+
+    if (task_to_delete == todo->tail)
+    {
+        todo->tail = previous;
+    }
+
+    task_memory_cleanup(task_to_delete);
+    todo->size--;
+
+    return true;
 }
 
 void todo_list_init(TodoList* todo)

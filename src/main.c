@@ -40,7 +40,7 @@ int main(void)
     puts("Todo list contents:");
     print_todo(&todo);
 
-    if (task_delete_by_id(&todo, todo.head->id))
+    if (todo_list_task_delete_by_id(&todo, todo.head->id))
     {
         puts("task deleted successfully");
     }
@@ -56,8 +56,7 @@ int main(void)
     {
         Task* temp = todo.head;
         todo.head = todo.head->next;
-        free(temp->description);
-        free(temp);
+        task_memory_cleanup(temp);
     }
 
     return 0;
