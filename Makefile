@@ -17,7 +17,7 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -Wall -Wextra -pedantic
+CFLAGS = -Wall -Wextra -pedantic -Wformat-truncation=0
 
 # Executable name
 TARGET = todo_c.exe

@@ -25,7 +25,10 @@ Here's the `Task` struct:
 ```c
 typedef struct
 {
+    char* id;
     char* description;
     TaskState state;
 } Task;
 ```
+
+**NOTE:** I would use a unique id generator based on date and time in an `unsigned long long` number field to address tasks instead of searching and comparing the descriptions.

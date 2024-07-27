@@ -13,11 +13,52 @@
 // *  Description: Read the readme file for more information
 // ***************************************************************************************
 
+#include "task.h"
 #include <stdio.h>
+#include <stdlib.h>
+
+void print_todo(TodoList* todo)
+{
+    Task* current = todo->head;
+    while (current != NULL)
+    {
+        printf("ID: %llu, %s\n", current->id, current->description);
+        current = current->next;
+    }
+}
 
 int main(void)
 {
-    puts("Hey there");
+    TodoList todo;
+
+    todo_list_init(&todo);
+
+    todo_list_insert_end(&todo, "I go to school");
+    todo_list_insert_end(&todo, "I go to gym");
+    todo_list_insert_end(&todo, "I go everywhere!");
+
+    puts("Todo list contents:");
+    print_todo(&todo);
+
+    if (task_delete(&todo, todo.head->id))
+    {
+        puts("task deleted successfully");
+    }
+    else
+    {
+        puts("task not found");
+    }
+
+    puts("Todo list contents after deletion:");
+    print_todo(&todo);
+
+    while (todo.head != NULL)
+    {
+        Task* temp = todo.head;
+        todo.head = todo.head->next;
+        free(temp->description);
+        free(temp);
+    }
 
     return 0;
 }
