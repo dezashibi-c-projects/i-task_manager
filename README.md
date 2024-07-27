@@ -20,15 +20,23 @@ typedef enum
 } TaskState;
 ```
 
-Here's the `Task` struct:
+Here's the `Task` struct and the Linked List:
 
 ```c
-typedef struct
+typedef struct Task
 {
-    char* id;
+    unsigned long long id;
     char* description;
     TaskState state;
+    struct Task* next;
 } Task;
+
+typedef struct
+{
+    Task* head;
+    Task* tail;
+    size_t size;
+} TodoList;
 ```
 
 **NOTE:** I would use a unique id generator based on date and time in an `unsigned long long` number field to address tasks instead of searching and comparing the descriptions.
