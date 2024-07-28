@@ -17,6 +17,8 @@
 CC = gcc
 
 # Compiler flags
+DEBUGFLAGS = -g -O0
+RELEASEFLAGS = -O2
 CFLAGS = -Wall -Wextra -pedantic
 
 # Executable name
@@ -26,12 +28,20 @@ TARGET = todo_c.exe
 SRCDIR = src
 OBJDIR = obj
 BUILDDIR = build
+RELEASEDIR = release
+DEBUGOBJDIR = $(OBJDIR)/debug
+RELEASEOBJDIR = $(OBJDIR)/release
 
 # Source files
 SRCS = $(wildcard $(SRCDIR)/*.c)
 
 # Object files
-OBJS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
+DEBUGOBJS = $(patsubst $(SRCDIR)/%.c,$(DEBUGOBJDIR)/%.o,$(SRCS))
+RELEASEOBJS = $(patsubst $(SRCDIR)/%.c,$(RELEASEOBJDIR)/%.o,$(SRCS))
+
+BUILDCMD = $(CC) $(CFLAGS)
+BUILDDEBUG = $(BUILDCMD) $(DEBUGFLAGS)
+BUILDRELEASE = $(BUILDCMD) $(RELEASEFLAGS)
 
 # Default target
 all: $(BUILDDIR)/$(TARGET)
@@ -40,20 +50,35 @@ all: $(BUILDDIR)/$(TARGET)
 run: $(BUILDDIR)/$(TARGET)
 	./$(BUILDDIR)/$(TARGET)
 
-# Rule to link the object files and create the executable
-$(BUILDDIR)/$(TARGET): $(OBJS)
+# Rule to link the object files and create the executable (debug)
+$(BUILDDIR)/$(TARGET): $(DEBUGOBJS)
 	mkdir -p $(BUILDDIR)
-	$(CC) $(CFLAGS) -o $@ $(OBJS)
+	$(BUILDDEBUG) -o $@ $(DEBUGOBJS)
 
-# Rule to compile source files into object files
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+# Rule to compile source files into object files (debug)
+$(DEBUGOBJDIR)/%.o: $(SRCDIR)/%.c
+	mkdir -p $(DEBUGOBJDIR)
+	$(BUILDDEBUG) -c $< -o $@
+
+# Rule to link the object files and create the executable (release)
+$(RELEASEDIR)/$(TARGET): $(RELEASEOBJS)
+	mkdir -p $(RELEASEDIR)
+	$(BUILDRELEASE) -o $@ $(RELEASEOBJS)
+
+# Rule to compile source files into object files (release)
+$(RELEASEOBJDIR)/%.o: $(SRCDIR)/%.c
+	mkdir -p $(RELEASEOBJDIR)
+	$(BUILDRELEASE) -c $< -o $@
+
+memcheck: clean $(BUILDDIR)/$(TARGET)
+	valgrind --leak-check=yes $(BUILDDIR)/$(TARGET)
+
+release: clean $(RELEASEDIR)/$(TARGET)
 
 # Clean up the build files
 clean:
-	rm -f $(BUILDDIR)/$(TARGET) $(OBJS)
-	rm -rf $(OBJDIR) $(BUILDDIR)
+	rm -f $(BUILDDIR)/$(TARGET) $(DEBUGOBJS) $(RELEASEOBJS)
+	rm -rf $(OBJDIR) $(BUILDDIR) $(RELEASEDIR)
 
 # Phony targets
-.PHONY: all clean
+.PHONY: all run clean memcheck release
