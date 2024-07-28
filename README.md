@@ -75,3 +75,20 @@ ID: 20240728085124, I go everywhere!
 ==20928== For lists of detected and suppressed errors, rerun with: -s
 ==20928== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
+
+## Dealing with data
+
+I want to make this a command line tool something with various commands that uses a specific file close to itself to save and load data:
+
+- `list` lists all the data if there is no file available or there is no entry it returns `No Entry - please use 'add' command to add new task`
+- `add` this commands receives a description which must be sent inside double quotes, then it generates a new entry and returns the task id as well. one other option can be to list the tasks all and highlight the newly created task which is more fun so I will go for this.
+- `state` sets the state of the given task id to the given state: 0 is not started, 1 is on going, 2 is done and 3 is cancelled. any other values or wrong task id will show proper error messages.
+- `edit` gets task id and description and will change the task's description.
+- `delete` gets task id and delete it while returns its last content including id, description and state.
+- `reset` first shows the tasks to be deleted, then asks the user if they are sure about this, and if so all the tasks will be deleted.
+
+**NOTE:** Not only after adding a new task but after each operation the overall list of tasks will be displayed.
+
+**NOTE2:** I would also to colorize task's state like one specific color per state.
+
+**NOTE3:** I will use background color for the newly added or changed tasks.

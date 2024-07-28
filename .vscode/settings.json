@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "cstdlib": "cpp",
-        "task.h": "c"
+        "task.h": "c",
+        "utils.h": "c"
     }
 }
