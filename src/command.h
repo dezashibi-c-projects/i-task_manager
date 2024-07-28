@@ -22,7 +22,6 @@
 
 #define MAX_TOK_PER_LINE 5
 #define MAX_TOK_SIZE 2048 // 2048 character for very long descriptions of any task
-#define MAX_LINE_SIZE (MAX_TOK_PER_LINE * MAX_TOK_SIZE)
 #define WHITE_SPACE " \t\n"
 
 /**
