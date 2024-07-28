@@ -49,9 +49,9 @@ typedef struct
 
 Task* task_create(const char* description, size_t count);
 void task_memory_cleanup(Task* task);
-Task* todo_list_task_find_by_id(TodoList* todo, unsigned long long id, Task** previous);
-bool todo_list_task_delete_by_id(TodoList* todo, unsigned long long id);
-void todo_list_init(TodoList* todo);
-void todo_list_insert_end(TodoList* todo, const char* description);
+Task* todo_list_task_find_by_id(TodoList* todo_list, unsigned long long id, Task** previous);
+bool todo_list_task_delete_by_id(TodoList* todo_list, unsigned long long id);
+void todo_list_init(TodoList* todo_list);
+void todo_list_insert_end(TodoList* todo_list, const char* description);
 
 #endif // TASK__H__

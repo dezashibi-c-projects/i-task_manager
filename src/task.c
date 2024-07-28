@@ -52,9 +52,9 @@ void task_memory_cleanup(Task* task)
     free(task);
 }
 
-Task* todo_list_task_find_by_id(TodoList* todo, unsigned long long id, Task** previous)
+Task* todo_list_task_find_by_id(TodoList* todo_list, unsigned long long id, Task** previous)
 {
-    Task* current = todo->head;
+    Task* current = todo_list->head;
     *previous = NULL;
 
     while (current != NULL)
@@ -71,10 +71,10 @@ Task* todo_list_task_find_by_id(TodoList* todo, unsigned long long id, Task** pr
     return NULL; // Not Found
 }
 
-bool todo_list_task_delete_by_id(TodoList* todo, unsigned long long id)
+bool todo_list_task_delete_by_id(TodoList* todo_list, unsigned long long id)
 {
     Task* previous = NULL;
-    Task* task_to_delete = todo_list_task_find_by_id(todo, id, &previous);
+    Task* task_to_delete = todo_list_task_find_by_id(todo_list, id, &previous);
 
     if (task_to_delete == NULL)
     {
@@ -84,44 +84,44 @@ bool todo_list_task_delete_by_id(TodoList* todo, unsigned long long id)
     if (previous == NULL)
     {
         // Task to delete is the head;
-        todo->head = task_to_delete->next;
+        todo_list->head = task_to_delete->next;
     }
     else
     {
         previous->next = task_to_delete->next;
     }
 
-    if (task_to_delete == todo->tail)
+    if (task_to_delete == todo_list->tail)
     {
-        todo->tail = previous;
+        todo_list->tail = previous;
     }
 
     task_memory_cleanup(task_to_delete);
-    todo->size--;
+    todo_list->size--;
 
     return true;
 }
 
-void todo_list_init(TodoList* todo)
+void todo_list_init(TodoList* todo_list)
 {
-    todo->head = NULL;
-    todo->tail = NULL;
-    todo->size = 0;
+    todo_list->head = NULL;
+    todo_list->tail = NULL;
+    todo_list->size = 0;
 }
 
-void todo_list_insert_end(TodoList* todo, const char* description)
+void todo_list_insert_end(TodoList* todo_list, const char* description)
 {
-    Task* new_task = task_create(description, todo->size);
+    Task* new_task = task_create(description, todo_list->size);
 
-    if (todo->tail == NULL)
+    if (todo_list->tail == NULL)
     {
-        todo->head = todo->tail = new_task;
+        todo_list->head = todo_list->tail = new_task;
     }
     else
     {
-        todo->tail->next = new_task;
-        todo->tail = new_task;
+        todo_list->tail->next = new_task;
+        todo_list->tail = new_task;
     }
 
-    todo->size++;
+    todo_list->size++;
 }
