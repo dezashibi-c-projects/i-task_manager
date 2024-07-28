@@ -70,12 +70,13 @@ $(RELEASEOBJDIR)/%.o: $(SRCDIR)/%.c
 	mkdir -p $(RELEASEOBJDIR)
 	$(BUILDRELEASE) -c $< -o $@
 
-memcheck: clean $(BUILDDIR)/$(TARGET)
+# Uses valgrind to check the debug build for memory leaks
+memcheck: $(BUILDDIR)/$(TARGET)
 	valgrind --leak-check=yes $(BUILDDIR)/$(TARGET)
 
-release: clean $(RELEASEDIR)/$(TARGET)
+release: $(RELEASEDIR)/$(TARGET)
 
-# Clean up the build files
+# Clean up the build/release files
 clean:
 	rm -f $(BUILDDIR)/$(TARGET) $(DEBUGOBJS) $(RELEASEOBJS)
 	rm -rf $(OBJDIR) $(BUILDDIR) $(RELEASEDIR)
