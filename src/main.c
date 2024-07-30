@@ -75,19 +75,6 @@ cleanup:
     return 0;
 }
 
-// #include <stdio.h>
-// #include <stdlib.h>
-
-// void print_todo(TodoList* todo)
-// {
-//     Task* current = todo->head;
-//     while (current != NULL)
-//     {
-//         printf("ID: %llu, %s\n", current->id, current->description);
-//         current = current->next;
-//     }
-// }
-
 // int main(void)
 // {
 //     TodoList todo;
