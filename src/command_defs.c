@@ -24,6 +24,7 @@
 #include <string.h>
 
 #define STORAGE_FILE "todo_storage.txt"
+#define DATA_FORMAT "%llu \"%[^\"]\" %d"
 
 def_invoke_fn_as(version_fn)
 {
@@ -59,7 +60,7 @@ def_invoke_fn_as(list_fn)
     int state;
     char description[MAX_TOK_SIZE];
 
-    while (fscanf(fp, "%llu \"%[^\"]\" %d", &id, description, &state) == 3)
+    while (fscanf(fp, DATA_FORMAT, &id, description, &state) == 3)
     {
         // Validate the id (no need to check for negative as it's unsigned)
         if (id > ULLONG_MAX)
