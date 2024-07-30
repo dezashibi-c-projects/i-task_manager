@@ -70,3 +70,58 @@ char* replace_file(const char* path, const char* new_file)
 
     return new_path;
 }
+
+//////////////////////// TABLE PRINTER HELPERS /////////////////////////////
+void table_print_border(int column_count, int column_width)
+{
+    for (int i = 0; i < column_count; ++i)
+    {
+        printf("+");
+        for (int j = 0; j < column_width; ++j)
+        {
+            printf("-");
+        }
+    }
+    printf("+\n");
+}
+
+void table_print_title(int column_count, int column_width, char titles[][MAX_TITLE_LENGTH])
+{
+    for (int i = 0; i < column_count; i++)
+    {
+        printf("| %-*s ", column_width - 2, titles[i]);
+    }
+    printf("|\n");
+}
+
+void table_print_row(int column_count, int column_width, char row[][MAX_ROW_LENGTH])
+{
+    for (int i = 0; i < column_count; i++)
+    {
+        printf("| %-*s ", column_width - 2, row[i]);
+    }
+    printf("|\n");
+}
+
+void table_print(int column_count, int column_width, char titles[][MAX_TITLE_LENGTH], char rows[][MAX_ROW_LENGTH], int row_count)
+{
+    table_print_border(column_count, column_width);
+    table_print_title(column_count, column_width, titles);
+    table_print_border(column_count, column_width);
+
+    for (int i = 0; i < row_count; ++i)
+    {
+        char* token;
+        char row[column_count][MAX_ROW_LENGTH];
+        int columnIndex = 0;
+
+        token = strtok(rows[i], ",");
+        while (token != NULL)
+        {
+            strcpy(row[columnIndex++], token);
+            token = strtok(NULL, ",");
+        }
+
+        table_print_row(column_count, column_width, row);
+    }
+}

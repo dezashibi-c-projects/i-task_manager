@@ -47,11 +47,75 @@ typedef struct
     size_t size;
 } TodoList;
 
+/**
+ * @brief Create a task object
+ *
+ * Creates and allocates memory for a new `Task` instance
+ *
+ * @param description the description for the new task
+ * @param size_t count the number of total tasks so far
+ *
+ * @return a pointer to newly created `Task` with allocated memory
+ *
+ * `Note: it allocates memory`
+ */
 Task* task_create(const char* description, size_t count);
+
+/**
+ * @brief Frees the task memory
+ *
+ * @param task pointer to the task to be freed
+ */
 void task_memory_cleanup(Task* task);
+
+/**
+ * @brief Finds and returns a task by its id
+ *
+ * @param todo_list the TodoList Linked List
+ * @param id the id of the task to be found
+ * @param previous pointer to the previous member in the Linked List for further determination of the placement
+ *
+ * @return pointer to the found task
+ */
 Task* todo_list_task_find_by_id(TodoList* todo_list, unsigned long long id, Task** previous);
+
+/**
+ * @brief Deletes a task by its id
+ *
+ * @param todo_list the TodoList Linked List
+ * @param id the id of the task to be deleted
+ *
+ * @returns whether the task was found and deleted or its not found
+ */
 bool todo_list_task_delete_by_id(TodoList* todo_list, unsigned long long id);
+
+/**
+ * @brief Initializes the TodoList to make it ready for usage
+ *
+ * @param todo_list a pointer to the newly defined TodoList instance variable
+ */
 void todo_list_init(TodoList* todo_list);
+
+/**
+ * @brief Creates and inserts a new task with passed description in the passed todo_list
+ *
+ * @param todo_list
+ * @param description
+ */
 void todo_list_insert_end(TodoList* todo_list, const char* description);
+
+/**
+ * @brief Prints the formatted table of the passed pointer to the TodoList
+ *
+ * @param todo_list
+ */
+void todo_list_print(TodoList* todo_list);
+
+/**
+ * @brief Reads data from the todo list storage file and fills the passed pointer to TodoList
+ *
+ * @param todo_list
+ */
+void todo_list_load_from_file(TodoList* todo_list);
 
 #endif // TASK__H__

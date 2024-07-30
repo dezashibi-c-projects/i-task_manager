@@ -14,6 +14,7 @@
 // ***************************************************************************************
 
 #include "task.h"
+#include "colors.h"
 #include "utils.h"
 
 #include <stdio.h>
@@ -124,4 +125,21 @@ void todo_list_insert_end(TodoList* todo_list, const char* description)
     }
 
     todo_list->size++;
+}
+
+void todo_list_print(TodoList* todo_list)
+{
+    Task* current = todo_list->head;
+    while (current != NULL)
+    {
+        puts(FG_WHITE "+--------------------------------------+");
+        puts("|" FG_LGREEN " Task Manager in C                      " FG_WHITE "|");
+        puts("+--------------------------------------+");
+
+        current = current->next;
+    }
+}
+
+void todo_list_load_from_file(TodoList* todo_list)
+{
 }
