@@ -43,6 +43,13 @@ BUILDCMD = $(CC) $(CFLAGS)
 BUILDDEBUG = $(BUILDCMD) $(DEBUGFLAGS)
 BUILDRELEASE = $(BUILDCMD) $(RELEASEFLAGS)
 
+# Memory check via valgrind works on Linux only
+VALGRINDCMD = valgrind --leak-check=yes $(BUILDDIR)/$(TARGET)
+
+ifeq ($(OS),Windows_NT)
+	VALGRINDCMD = @echo "sorry, valgrind does not work on windows, please consider using WSL or a Linux machine."
+endif
+
 # Default target
 all: $(BUILDDIR)/$(TARGET)
 
@@ -72,7 +79,7 @@ $(RELEASEOBJDIR)/%.o: $(SRCDIR)/%.c
 
 # Uses valgrind to check the debug build for memory leaks
 memcheck: $(BUILDDIR)/$(TARGET)
-	valgrind --leak-check=yes $(BUILDDIR)/$(TARGET)
+	$(VALGRINDCMD)
 
 release: $(RELEASEDIR)/$(TARGET)
 
