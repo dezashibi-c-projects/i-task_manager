@@ -18,7 +18,7 @@ CC = gcc
 
 # Compiler flags
 DEBUGFLAGS = -g -O0
-RELEASEFLAGS = -O2
+RELEASEFLAGS = -O2 -s
 CFLAGS = -Wall -Wextra -pedantic
 
 # Executable name
