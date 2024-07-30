@@ -16,9 +16,14 @@
 #include "command_defs.h"
 #include "colors.h"
 #include "command.h"
+#include "task.h"
+#include "utils.h"
+#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+
+#define STORAGE_FILE "todo_storage.txt"
 
 def_invoke_fn_as(version_fn)
 {
@@ -36,10 +41,59 @@ def_invoke_fn_as(list_fn)
 {
     (void)cmd;
 
-    do_arg_check(3);
+    do_arg_check(2);
+    (void)arg_starts_at;
 
-    for (int i = arg_starts_at; i < argc; ++i)
+    // make sure the storage file is close to the executable
+    char* file_name = replace_file(argv[0], STORAGE_FILE);
+
+    FILE* fp = fopen(file_name, "r");
+    if (fp == NULL)
     {
-        printf("%s\n", argv[i]);
+        fprintf(stderr, FG_RED "error: " COLOR_RESET "cannot open the storage file, please add a new task using `add` command first\n");
+        free(file_name);
+        exit(EXIT_FAILURE);
     }
+
+    unsigned long long id;
+    int state;
+    char description[MAX_TOK_SIZE];
+
+    while (fscanf(fp, "%llu \"%[^\"]\" %d", &id, description, &state) == 3)
+    {
+        // Validate the id (no need to check for negative as it's unsigned)
+        if (id > ULLONG_MAX)
+        {
+            fprintf(stderr, FG_RED "Invalid id, exceeds maximum value: %llu\n" COLOR_RESET, id);
+            continue;
+        }
+
+        // Validate the description
+        if (strlen(description) <= 0 || strlen(description) >= MAX_TOK_SIZE)
+        {
+            fprintf(stderr, FG_RED "Invalid description: %s\n" COLOR_RESET, description);
+            continue;
+        }
+
+        // Validate state
+        if (state < NOT_STARTED || state > CANCELLED)
+        {
+            fprintf(stderr, FG_RED "Invalid state: %d, it must be 0, 1, 2 or 3\n" COLOR_RESET, state);
+            continue;
+        }
+
+        printf("Id: %lld\n", id);
+        printf("Description: %s\n", description);
+        printf("State: %d\n", state);
+        printf("---------------------\n");
+    }
+
+    // Check if the loop ended due to an error in fscanf
+    if (!feof(fp))
+    {
+        fprintf(stderr, FG_RED "Error reading the file or invalid format\n" COLOR_RESET);
+    }
+
+    free(file_name);
+    fclose(fp);
 }

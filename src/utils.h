@@ -18,6 +18,12 @@
 
 #include <stddef.h>
 
+#ifdef _WIN32
+#define PATH_SEP '\\'
+#else
+#define PATH_SEP '/'
+#endif
+
 /**
  * @brief generates unique id number based on date and time
  *
@@ -26,5 +32,17 @@
  * of the linked list to the generated number`
  */
 unsigned long long generate_unique_id(size_t seed);
+
+/**
+ * @brief Function to replace the file part of a path with a new file name
+ *
+ * @param path a path to a file
+ * @param new_file file name that must be replaced with current file name in `path`
+ *
+ * @return allocated `char*` result
+ *
+ * `NOTE: it allocates memory`
+ */
+char* replace_file(const char* path, const char* new_file);
 
 #endif // UTILS__H__

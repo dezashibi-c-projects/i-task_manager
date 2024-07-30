@@ -45,9 +45,17 @@ BUILDRELEASE = $(BUILDCMD) $(RELEASEFLAGS)
 
 # Memory check via valgrind works on Linux only
 VALGRINDCMD = valgrind --leak-check=yes $(BUILDDIR)/$(TARGET)
+VALGRIND_TEST1 = list
+VALGRIND_TEST2 = list
+VALGRIND_TEST3 = list
+VALGRIND_TEST4 = list
 
 ifeq ($(OS),Windows_NT)
 	VALGRINDCMD = @echo "sorry, valgrind does not work on windows, please consider using WSL or a Linux machine."
+	VALGRIND_TEST1 =
+	VALGRIND_TEST2 =
+	VALGRIND_TEST3 =
+	VALGRIND_TEST4 =
 endif
 
 # Default target
@@ -61,6 +69,7 @@ run: $(BUILDDIR)/$(TARGET)
 $(BUILDDIR)/$(TARGET): $(DEBUGOBJS)
 	mkdir -p $(BUILDDIR)
 	$(BUILDDEBUG) -o $@ $(DEBUGOBJS)
+	cp todo_storage.txt $(BUILDDIR)
 
 # Rule to compile source files into object files (debug)
 $(DEBUGOBJDIR)/%.o: $(SRCDIR)/%.c
@@ -79,7 +88,34 @@ $(RELEASEOBJDIR)/%.o: $(SRCDIR)/%.c
 
 # Uses valgrind to check the debug build for memory leaks
 memcheck: $(BUILDDIR)/$(TARGET)
+	@echo "-------------------------------------------------"
+	@echo "MEMCHECK with no parameter"
+	@echo "-------------------------------------------------"
 	$(VALGRINDCMD)
+
+memcheck1: $(BUILDDIR)/$(TARGET)
+	@echo "-------------------------------------------------"
+	@echo "MEMCHECK with '$(VALGRIND_TEST1)' parameter"
+	@echo "-------------------------------------------------"
+	$(VALGRINDCMD) $(VALGRIND_TEST1)
+
+memcheck2: $(BUILDDIR)/$(TARGET)
+	@echo "-------------------------------------------------"
+	@echo "MEMCHECK with '$(VALGRIND_TEST2)' parameter"
+	@echo "-------------------------------------------------"
+	$(VALGRINDCMD) $(VALGRIND_TEST2)
+
+memcheck3: $(BUILDDIR)/$(TARGET)
+	@echo "-------------------------------------------------"
+	@echo "MEMCHECK with '$(VALGRIND_TEST3)' parameter"
+	@echo "-------------------------------------------------"
+	$(VALGRINDCMD) $(VALGRIND_TEST4)
+
+memcheck4: $(BUILDDIR)/$(TARGET)
+	@echo "-------------------------------------------------"
+	@echo "MEMCHECK with '$(VALGRIND_TEST4)' parameter"
+	@echo "-------------------------------------------------"
+	$(VALGRINDCMD) $(VALGRIND_TEST4)
 
 release: $(RELEASEDIR)/$(TARGET)
 
@@ -87,6 +123,7 @@ release: $(RELEASEDIR)/$(TARGET)
 clean:
 	rm -f $(BUILDDIR)/$(TARGET) $(DEBUGOBJS) $(RELEASEOBJS)
 	rm -rf $(OBJDIR) $(BUILDDIR) $(RELEASEDIR)
+	rm -rf $(BUILDDIR)/todo_storage.txt
 
 # Phony targets
-.PHONY: all run clean memcheck release
+.PHONY: all run clean memcheck memcheck1 memcheck2 memcheck3 memcheck4 release

@@ -16,6 +16,7 @@
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 unsigned long long generate_unique_id(size_t seed)
@@ -38,4 +39,34 @@ unsigned long long generate_unique_id(size_t seed)
                             local_time.tm_sec + seed;
 
     return id;
+}
+
+char* replace_file(const char* path, const char* new_file)
+{
+    // Find the last occurrence of the directory separator
+    const char* last_sep = strrchr(path, PATH_SEP);
+
+    // Calculate the length of the directory part
+    size_t dir_length = (last_sep != NULL) ? (last_sep - path + 1) : 0;
+
+    // Allocate memory for the new path
+    size_t new_path_length = dir_length + strlen(new_file) + 1;
+    char* new_path = (char*)malloc(new_path_length);
+
+    if (new_path == NULL)
+    {
+        fprintf(stderr, "Memory allocation failed\n");
+        return NULL;
+    }
+
+    // Copy the directory part to the new path
+    if (dir_length > 0)
+    {
+        strncpy(new_path, path, dir_length);
+    }
+
+    // Append the new file name
+    strcpy(new_path + dir_length, new_file);
+
+    return new_path;
 }
