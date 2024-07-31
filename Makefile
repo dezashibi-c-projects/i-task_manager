@@ -46,9 +46,9 @@ BUILDRELEASE = $(BUILDCMD) $(RELEASEFLAGS)
 # Memory check via valgrind works on Linux only
 VALGRINDCMD = valgrind --leak-check=yes $(BUILDDIR)/$(TARGET)
 VALGRIND_TEST1 = list
-VALGRIND_TEST2 = list
-VALGRIND_TEST3 = list
-VALGRIND_TEST4 = list
+VALGRIND_TEST2 = add "This is another amazing task"
+VALGRIND_TEST3 = state 1111111113 2
+VALGRIND_TEST4 = delete 1111111113
 
 ifeq ($(OS),Windows_NT)
 	VALGRINDCMD = @echo "sorry, valgrind does not work on windows, please consider using WSL or a Linux machine."
