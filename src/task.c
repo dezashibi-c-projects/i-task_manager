@@ -230,7 +230,7 @@ void todo_list_load_from_file(TodoList* todo_list, const char* file_name)
         // Validate the description
         if (strlen(description) <= 0 || strlen(description) >= DESCRIPTION_COL_WIDTH)
         {
-            fprintf(stderr, FG_RED "Invalid description: %s\n" COLOR_RESET, description);
+            fprintf(stderr, FG_RED "Too long description: %s\n" COLOR_RESET, description);
             continue;
         }
 

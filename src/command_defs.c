@@ -77,6 +77,12 @@ def_invoke_fn_as(add_fn)
 
     todo_list_load_from_file(&todo_list, file_name);
 
+    if (strlen(argv[arg_starts_at]) >= DESCRIPTION_COL_WIDTH)
+    {
+        fprintf(stderr, FG_RED "Too long description: %s\n" COLOR_RESET, argv[arg_starts_at]);
+        goto cleanup;
+    }
+
     Task* new_task = task_create(0, argv[arg_starts_at], NOT_STARTED, todo_list.size);
     todo_list_insert_end(&todo_list, new_task);
 
@@ -85,6 +91,7 @@ def_invoke_fn_as(add_fn)
     // update the storage file
     todo_list_save_to_file(&todo_list, file_name);
 
+cleanup:
     free(file_name);
 
     while (todo_list.head != NULL)
@@ -114,8 +121,6 @@ def_invoke_fn_as(state_fn)
 
     sscanf(argv[arg_starts_at], "%llu", &id);
     sscanf(argv[arg_starts_at + 1], "%d", &new_state);
-
-    printf("%d, %llu, %d\n", arg_starts_at, id, new_state);
 
     Task* previous = NULL;
     Task* task = todo_list_task_find_by_id(&todo_list, id, &previous);

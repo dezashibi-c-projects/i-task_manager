@@ -21,7 +21,7 @@
 #include <stdlib.h>
 
 #define MAX_TOK_PER_LINE 5
-#define MAX_TOK_SIZE 42 // 42 character for very long descriptions of any task
+#define MAX_TOK_SIZE 1024
 #define WHITE_SPACE " \t\n"
 
 /**
