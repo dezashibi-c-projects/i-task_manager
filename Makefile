@@ -109,7 +109,7 @@ memcheck3: $(BUILDDIR)/$(TARGET)
 	@echo "-------------------------------------------------"
 	@echo "MEMCHECK with '$(VALGRIND_TEST3)' parameter"
 	@echo "-------------------------------------------------"
-	$(VALGRINDCMD) $(VALGRIND_TEST4)
+	$(VALGRINDCMD) $(VALGRIND_TEST3)
 
 memcheck4: $(BUILDDIR)/$(TARGET)
 	@echo "-------------------------------------------------"

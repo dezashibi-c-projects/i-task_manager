@@ -79,7 +79,7 @@ typedef char line_token_t[MAX_TOK_PER_LINE][MAX_TOK_SIZE];
                                                                                                                                                   \
         exit(-1);                                                                                                                                 \
     }                                                                                                                                             \
-    int arg_starts_at = (MIN_ARG - 1)
+    int arg_starts_at = 2
 
 struct Command; // forward declaration to make the function pointer field work
 typedef struct Command

@@ -130,4 +130,12 @@ void todo_list_print(TodoList* todo_list, Task* highlighted_task);
  */
 void todo_list_load_from_file(TodoList* todo_list, const char* file_name);
 
+/**
+ * @brief Saves the todo list in file
+ *
+ * @param todo_list
+ * @param file_name
+ */
+void todo_list_save_to_file(TodoList* todo_list, const char* file_name);
+
 #endif // TASK__H__

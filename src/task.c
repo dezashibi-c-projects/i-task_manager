@@ -253,3 +253,24 @@ void todo_list_load_from_file(TodoList* todo_list, const char* file_name)
 
     fclose(fp);
 }
+
+void todo_list_save_to_file(TodoList* todo_list, const char* file_name)
+{
+    FILE* fp = fopen(file_name, "w");
+    if (fp == NULL)
+    {
+        fprintf(stderr, FG_RED "error: " COLOR_RESET "cannot open the storage file, please add a new task using `add` command first\n");
+        return;
+    }
+
+    Task* current = todo_list->head;
+    while (current != NULL)
+    {
+        fprintf(fp, "%llu \"%s\" %d", current->id, current->description, current->state);
+        fprintf(fp, "\n");
+
+        current = current->next;
+    }
+
+    fclose(fp);
+}

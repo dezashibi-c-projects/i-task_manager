@@ -26,6 +26,9 @@
 def_commands = {
     {"version", "shows version and build information", version_fn},
     {"list", "Lists all the available tasks from the todo storage in a table.", list_fn},
+    {"add", "Adds a new task with the given description, be sure to put description in double quotes\n<id> \"<description in double quote>\"", add_fn},
+    {"state", "Changes the state of given task id, <id> <new state>, states are 0, 1, 2, 3 as Not Started, On Going, Done and Cancelled", state_fn},
+    {"delete", "Deletes the passed task by its id <id>", delete_fn},
 };
 def_commands_size = (sizeof(commands) / sizeof(commands[0]));
 
@@ -57,6 +60,9 @@ int main(int argc, char* argv[])
     bool must_fail = false;
 
     check_argc_size(argc, false);
+
+    strcpy(temp_argv[0], argv[0]);
+    strcpy(temp_argv[1], argv[1]);
 
     for (int i = 2; i < argc; ++i)
     {

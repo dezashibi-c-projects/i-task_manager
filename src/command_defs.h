@@ -42,4 +42,10 @@ def_invoke_fn_as(version_fn);
  */
 def_invoke_fn_as(list_fn);
 
+def_invoke_fn_as(add_fn);
+
+def_invoke_fn_as(state_fn);
+
+def_invoke_fn_as(delete_fn);
+
 #endif // COMMAND_DEFS__H__
