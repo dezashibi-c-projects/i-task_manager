@@ -42,10 +42,40 @@ def_invoke_fn_as(version_fn);
  */
 def_invoke_fn_as(list_fn);
 
+/**
+ * @brief invoke function for `add` command
+ *
+ * Adds a new task to the storage file and prints them all
+ *
+ * @param cmd reference to the invoked command
+ * @param argc command line argument count.
+ * @param argv command line arguments.
+ * @return void
+ */
 def_invoke_fn_as(add_fn);
 
+/**
+ * @brief invoke function for `state` command
+ *
+ * changes the state for given task and prints them all
+ *
+ * @param cmd reference to the invoked command
+ * @param argc command line argument count.
+ * @param argv command line arguments.
+ * @return void
+ */
 def_invoke_fn_as(state_fn);
 
+/**
+ * @brief invoke function for `add` command
+ *
+ * deletes the given task from the storage file and prints them all
+ *
+ * @param cmd reference to the invoked command
+ * @param argc command line argument count.
+ * @param argv command line arguments.
+ * @return void
+ */
 def_invoke_fn_as(delete_fn);
 
 #endif // COMMAND_DEFS__H__
