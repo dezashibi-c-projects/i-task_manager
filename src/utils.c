@@ -14,6 +14,7 @@
 // ***************************************************************************************
 
 #include "utils.h"
+#include "colors.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -72,56 +73,44 @@ char* replace_file(const char* path, const char* new_file)
 }
 
 //////////////////////// TABLE PRINTER HELPERS /////////////////////////////
-void table_print_border(int column_count, int column_width)
+
+void print_char_n_times(char ch, int n)
 {
-    for (int i = 0; i < column_count; ++i)
+    for (int i = 0; i < n; i++)
     {
-        printf("+");
-        for (int j = 0; j < column_width; ++j)
-        {
-            printf("-");
-        }
+        printf("%c", ch);
     }
-    printf("+\n");
 }
 
-void table_print_title(int column_count, int column_width, char titles[][MAX_TITLE_LENGTH])
+void table_print_border()
 {
-    for (int i = 0; i < column_count; i++)
-    {
-        printf("| %-*s ", column_width - 2, titles[i]);
-    }
-    printf("|\n");
+    printf("%s", FG_WHITE);
+    printf("+");
+
+    print_char_n_times('-', ID_COL_WIDTH);
+
+    printf("+");
+
+    print_char_n_times('-', DESCRIPTION_COL_WIDTH);
+
+    printf("+");
+
+    print_char_n_times('-', STATE_COL_WIDTH);
+
+    puts("+");
+    printf("%s", COLOR_RESET);
 }
 
-void table_print_row(int column_count, int column_width, char row[][MAX_ROW_LENGTH])
+void table_print_title()
 {
-    for (int i = 0; i < column_count; i++)
-    {
-        printf("| %-*s ", column_width - 2, row[i]);
-    }
-    printf("|\n");
-}
+    printf("%s", FG_WHITE "| " FG_LGREEN);
+    printf("%-*s ", ID_COL_WIDTH - 2, "Id");
 
-void table_print(int column_count, int column_width, char titles[][MAX_TITLE_LENGTH], char rows[][MAX_ROW_LENGTH], int row_count)
-{
-    table_print_border(column_count, column_width);
-    table_print_title(column_count, column_width, titles);
-    table_print_border(column_count, column_width);
+    printf("%s", FG_WHITE "| " FG_LGREEN);
+    printf("%-*s ", DESCRIPTION_COL_WIDTH - 2, "Description");
 
-    for (int i = 0; i < row_count; ++i)
-    {
-        char* token;
-        char row[column_count][MAX_ROW_LENGTH];
-        int columnIndex = 0;
+    printf("%s", FG_WHITE "| " FG_LGREEN);
+    printf("%-*s ", STATE_COL_WIDTH - 2, "State");
 
-        token = strtok(rows[i], ",");
-        while (token != NULL)
-        {
-            strcpy(row[columnIndex++], token);
-            token = strtok(NULL, ",");
-        }
-
-        table_print_row(column_count, column_width, row);
-    }
+    puts(FG_WHITE "|" COLOR_RESET);
 }

@@ -18,13 +18,11 @@
 #include "command.h"
 #include "task.h"
 #include "utils.h"
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
 #define STORAGE_FILE "todo_storage.txt"
-#define DATA_FORMAT "%llu \"%[^\"]\" %d"
 
 def_invoke_fn_as(version_fn)
 {
@@ -48,53 +46,19 @@ def_invoke_fn_as(list_fn)
     // make sure the storage file is close to the executable
     char* file_name = replace_file(argv[0], STORAGE_FILE);
 
-    FILE* fp = fopen(file_name, "r");
-    if (fp == NULL)
-    {
-        fprintf(stderr, FG_RED "error: " COLOR_RESET "cannot open the storage file, please add a new task using `add` command first\n");
-        free(file_name);
-        exit(EXIT_FAILURE);
-    }
+    TodoList todo_list;
+    todo_list_init(&todo_list);
 
-    unsigned long long id;
-    int state;
-    char description[MAX_TOK_SIZE];
-
-    while (fscanf(fp, DATA_FORMAT, &id, description, &state) == 3)
-    {
-        // Validate the id (no need to check for negative as it's unsigned)
-        if (id > ULLONG_MAX)
-        {
-            fprintf(stderr, FG_RED "Invalid id, exceeds maximum value: %llu\n" COLOR_RESET, id);
-            continue;
-        }
-
-        // Validate the description
-        if (strlen(description) <= 0 || strlen(description) >= MAX_TOK_SIZE)
-        {
-            fprintf(stderr, FG_RED "Invalid description: %s\n" COLOR_RESET, description);
-            continue;
-        }
-
-        // Validate state
-        if (state < NOT_STARTED || state > CANCELLED)
-        {
-            fprintf(stderr, FG_RED "Invalid state: %d, it must be 0, 1, 2 or 3\n" COLOR_RESET, state);
-            continue;
-        }
-
-        printf("Id: %lld\n", id);
-        printf("Description: %s\n", description);
-        printf("State: %d\n", state);
-        printf("---------------------\n");
-    }
-
-    // Check if the loop ended due to an error in fscanf
-    if (!feof(fp))
-    {
-        fprintf(stderr, FG_RED "Error reading the file or invalid format\n" COLOR_RESET);
-    }
+    todo_list_load_from_file(&todo_list, file_name);
 
     free(file_name);
-    fclose(fp);
+
+    todo_list_print(&todo_list, NULL);
+
+    while (todo_list.head != NULL)
+    {
+        Task* temp = todo_list.head;
+        todo_list.head = todo_list.head->next;
+        task_memory_cleanup(temp);
+    }
 }

@@ -52,14 +52,16 @@ typedef struct
  *
  * Creates and allocates memory for a new `Task` instance
  *
+ * @param id the id of the task, pass 0 to generate new id
  * @param description the description for the new task
+ * @param state of the task -> NOT_STARTED, ON_GOING, DONE, CANCELLED
  * @param size_t count the number of total tasks so far
  *
  * @return a pointer to newly created `Task` with allocated memory
  *
  * `Note: it allocates memory`
  */
-Task* task_create(const char* description, size_t count);
+Task* task_create(unsigned long long id, const char* description, TaskState state, size_t count);
 
 /**
  * @brief Frees the task memory
@@ -97,25 +99,35 @@ bool todo_list_task_delete_by_id(TodoList* todo_list, unsigned long long id);
 void todo_list_init(TodoList* todo_list);
 
 /**
- * @brief Creates and inserts a new task with passed description in the passed todo_list
+ * @brief Creates and inserts the passed newly created task in the passed todo_list
  *
  * @param todo_list
- * @param description
+ * @param task
  */
-void todo_list_insert_end(TodoList* todo_list, const char* description);
+void todo_list_insert_end(TodoList* todo_list, Task* task);
+
+/**
+ * @brief Prints task in a formatted colorized table row
+ *
+ * @param task
+ * @param highlighted whether the task has background color or not
+ */
+void task_print(Task* task, bool highlighted);
 
 /**
  * @brief Prints the formatted table of the passed pointer to the TodoList
  *
  * @param todo_list
+ * @param highlighted_task task to be highlighted pass NULL to ignore highlighting
  */
-void todo_list_print(TodoList* todo_list);
+void todo_list_print(TodoList* todo_list, Task* highlighted_task);
 
 /**
  * @brief Reads data from the todo list storage file and fills the passed pointer to TodoList
  *
  * @param todo_list
+ * @param file_name
  */
-void todo_list_load_from_file(TodoList* todo_list);
+void todo_list_load_from_file(TodoList* todo_list, const char* file_name);
 
 #endif // TASK__H__

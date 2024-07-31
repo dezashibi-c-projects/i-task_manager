@@ -24,8 +24,9 @@
 #define PATH_SEP '/'
 #endif
 
-#define MAX_TITLE_LENGTH 50
-#define MAX_ROW_LENGTH 50
+#define ID_COL_WIDTH 16
+#define DESCRIPTION_COL_WIDTH 40
+#define STATE_COL_WIDTH 15
 
 /**
  * @brief generates unique id number based on date and time
@@ -49,17 +50,11 @@ unsigned long long generate_unique_id(size_t seed);
 char* replace_file(const char* path, const char* new_file);
 
 //////////////////////// TABLE PRINTER HELPERS /////////////////////////////
-/*
-void table_print_border(int column_count, int column_width);
 
-void table_print_title(int column_count, int column_width, char titles[][MAX_TITLE_LENGTH]);
+void print_char_n_times(char ch, int n);
 
-void table_print_row(int column_count, int column_width, char row[][MAX_ROW_LENGTH]);
- */
+void table_print_border();
 
-/**
- * @brief Prints formatted table
- */
-void table_print(int column_count, int column_width, char titles[][MAX_TITLE_LENGTH], char rows[][MAX_ROW_LENGTH], int row_count);
+void table_print_title();
 
 #endif // UTILS__H__
