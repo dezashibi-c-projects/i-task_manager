@@ -44,7 +44,7 @@ def_invoke_fn_as(list_fn)
     (void)arg_starts_at;
 
     // make sure the storage file is close to the executable
-    char* file_name = replace_file(argv[0], STORAGE_FILE);
+    char* file_name = replace_file_in_path(argv[0], STORAGE_FILE);
 
     TodoList todo_list;
     todo_list_init(&todo_list);
@@ -70,7 +70,7 @@ def_invoke_fn_as(add_fn)
     do_arg_check(3);
 
     // make sure the storage file is close to the executable
-    char* file_name = replace_file(argv[0], STORAGE_FILE);
+    char* file_name = replace_file_in_path(argv[0], STORAGE_FILE);
 
     TodoList todo_list;
     todo_list_init(&todo_list);
@@ -109,7 +109,7 @@ def_invoke_fn_as(state_fn)
     do_arg_check(4);
 
     // make sure the storage file is close to the executable
-    char* file_name = replace_file(argv[0], STORAGE_FILE);
+    char* file_name = replace_file_in_path(argv[0], STORAGE_FILE);
 
     TodoList todo_list;
     todo_list_init(&todo_list);
@@ -155,7 +155,7 @@ def_invoke_fn_as(delete_fn)
     do_arg_check(3);
 
     // make sure the storage file is close to the executable
-    char* file_name = replace_file(argv[0], STORAGE_FILE);
+    char* file_name = replace_file_in_path(argv[0], STORAGE_FILE);
 
     TodoList todo_list;
     todo_list_init(&todo_list);
