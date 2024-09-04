@@ -47,7 +47,7 @@ unsigned long long generate_unique_id(size_t seed);
  *
  * `NOTE: it allocates memory`
  */
-char* replace_file(const char* path, const char* new_file);
+char* replace_file_in_path(const char* path, const char* new_file);
 
 //////////////////////// TABLE PRINTER HELPERS /////////////////////////////
 
